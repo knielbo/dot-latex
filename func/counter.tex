@@ -1,0 +1,25 @@
+\documentclass{article}
+\newread\tmp
+
+\newcommand{\quickcharcount}[1]{%
+  \immediate\write18{texcount -1 -sum -merge -char #1.tex > #1-chars.sum}%
+  \openin\tmp=#1-chars.sum%
+  \read\tmp to \thechar%
+  \closein\tmp%
+}
+
+\newcommand{\quickwordcount}[1]{%
+  \immediate\write18{texcount -1 -sum -merge #1.tex > #1-words.sum}%
+  \openin\tmp=#1-words.sum%
+  \read\tmp to \theword%
+  \closein\tmp%
+}
+
+\begin{document}
+\quickwordcount{main}
+\quickcharcount{main}
+
+\noindent There are \thechar characters and approximately \theword spaces.
+That makes approximately \the\numexpr\theword+\thechar\relax\ characters total.
+
+\end{document}
